@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GPS Visualization Lab</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <style>
+        #map { height: 500px; width: 100%; border-radius: 8px; }
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+    </style>
+</head>
+<body>
+
+    <h2>My GPS Data Visualization</h2>
+    <p>Visualizing coordinates parsed from Python.</p>
+    
+    <div id="map"></div>
+
+    <script>
+        // 2. State Management: Your "Clean" coordinates from the Python step
+        // Paste your clean_lat and clean_lon values here
+        const myLat = 48.1173; 
+        const myLon = 11.5166;
+
+        // 3. The Projection & Initialization
+        // L.map('map') initializes the engine and projects the coordinates to the screen
+        const map = L.map('map').setView([myLat, myLon], 13);
+
+        // 4. Tile Layer Compositing (The "Rasterizer")
+        // This fetches the 256x256 pixel images from OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // 5. Render: Drawing the Vector Marker
+        L.marker([myLat, myLon]).addTo(map)
+            .bindPopup('Satellite Signal Location')
+            .openPopup();
+    </script>
+</body>
+</html>
