@@ -1,3 +1,9 @@
+alicorn_master:  this is the GUI
+project_alicorn:  terminal version
+index & index2:  maps
+student ids: 12345, 54321, 99999
+
+
 - GPS paring
   - Parser.py
     - Raw GPS text and turn into numbers
