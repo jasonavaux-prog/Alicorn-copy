@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
 
+const cors = require("cors");
+
+app.use(cors());
+app.use(express.json());
+
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
@@ -30,6 +35,10 @@ app.get("/students", (req, res) => {
   ]);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// ✅ ADD THIS BLOCK HERE
+app.post("/gps", (req, res) => {
+  console.log("Received GPS:", req.body);
+  res.json({ success: true });
 });
+
+app.listen(PORT, () => {
