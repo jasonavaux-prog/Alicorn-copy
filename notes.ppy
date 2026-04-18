@@ -1,1 +1,16 @@
+# Flask Official Docs/ Flask Quickstart documentation
+#    https://flask.palletsprojects.com/
+# ctrl F or scroll down to find all information below
+
+
+#Example from docs:
+@app.route("/")
+def hello_world():
+    return "Hello, World!"
+
+#Handling JSON request for GPS route
+request.get_json()
+
+#jsonify returning data
+return jsonify({...})
 
