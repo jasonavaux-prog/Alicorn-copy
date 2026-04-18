@@ -53,6 +53,7 @@ USED AI TO CREATE DATA FILL IN FOR DEMO
         pip install -r requirements.txt
 
 ## Run server
+still in command prompt type:
 python app.py
 
 ## Open in browser for testing
