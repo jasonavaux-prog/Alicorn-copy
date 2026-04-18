@@ -21,7 +21,7 @@ return jsonify({...})
 #### requirements.txt  ####
 ############################
 
-# sime site (flask.palletsprojects.com)
+# same site (flask.palletsprojects.com)
 
 
 
@@ -45,3 +45,10 @@ python app.py
 
 ## Open in browser
 http://localhost:5000
+
+this makes:
+your computer the server
+flask backend running on it
+browser - client connecting to it
+
+
