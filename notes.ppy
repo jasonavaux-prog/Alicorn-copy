@@ -2,6 +2,9 @@
 #    https://flask.palletsprojects.com/
 # ctrl F or scroll down to find all information below
 
+################
+##### app.py #####
+################
 
 #Example from docs:
 @app.route("/")
@@ -14,3 +17,31 @@ request.get_json()
 #jsonify returning data
 return jsonify({...})
 
+###########################
+#### requirements.txt  ####
+############################
+
+# sime site (flask.palletsprojects.com)
+
+
+
+
+
+
+###########################
+# Alicorn Backend Demo Setup
+############################
+
+1. Download or clone repo
+2. Open terminal in folder
+    - go to app.y folder, click file path, type cmd
+
+## Install dependencies
+  - in command promt type
+        pip install -r requirements.txt
+
+## Run server
+python app.py
+
+## Open in browser
+http://localhost:5000
