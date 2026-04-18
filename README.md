@@ -2,7 +2,7 @@
 #    https://flask.palletsprojects.com/
 # ctrl F or scroll down to find all information below
 
-
+This part covers the build for app.py and requirements.txt ##############################################
 
 what i did to set up aka refernce page.....
 ################
@@ -36,13 +36,12 @@ USED AI TO CREATE DATA FILL IN FOR DEMO
 # same site (flask.palletsprojects.com)
 
 
-
-
-
-
 ###########################
 # Alicorn Backend Demo Setup
 ############################
+cite pip documentation and Python Docs
+
+
 
 1. Download or clone repo
 2. Open terminal in folder
@@ -68,9 +67,6 @@ flask backend running on it
 browser - client connecting to it
 
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-cite pip documentation and Python Docs
-
-now intall with this:    pip install -r requirements.txt
+##################################################################################################################
 
 
