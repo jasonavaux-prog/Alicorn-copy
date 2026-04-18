@@ -41,10 +41,13 @@ return jsonify({...})
         pip install -r requirements.txt
 
 ## Run server
-python app.py
+        python app.py
 
 ## Open in browser
-http://localhost:5000
+http://127.0.0.1:5000/
+http://127.0.0.1:5000/bus-location
+http://127.0.0.1:5000/attendance
+http://127.0.0.1:5000/students
 
 this makes:
 your computer the server
