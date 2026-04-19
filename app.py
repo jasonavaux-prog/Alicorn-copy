@@ -9,6 +9,19 @@ CORS(app)
 def home():
     return "ALICORN backend is running"
 
+"""\
+CREATED 4/18/2026
+@app.route("/bus-location", methods=["GET"])
+@app.route("/attendance", methods=["GET"])
+@app.route("/students", methods=["GET"])
+@app.route("/gps", methods=["POST"])
+
+Update 4/19/2026
+
+
+"""
+
+
 @app.route("/bus-location", methods=["GET"])
 def bus_location():
     return jsonify({
