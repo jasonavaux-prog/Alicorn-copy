@@ -1,13 +1,21 @@
+First look for a file with name: Current how to as of ___ (date)
+
+
+
 # Flask Official Docs/ Flask Quickstart documentation
 #    https://flask.palletsprojects.com/
 # ctrl F or scroll down to find all information below
 
-This part covers the build for app.py and requirements.txt ##############################################
+
+
+#######################################################################
+This part covers the build for app.py and requirements.txt 
 
 what i did to set up aka refernce page.....
-################
-##### app.py #####
-################
+
+##                ##
+##   ~ app.py ~   ##
+##                ##
 
 #Example from docs:
 @app.route("/")
@@ -29,17 +37,23 @@ POST /gps              receive data from frontend
 
 USED AI TO CREATE DATA FILL IN FOR DEMO
 
-###########################
-#### requirements.txt  ####
-############################
+##                        ##
+##  ~ requirements.txt ~  ##
+##                        ##
+
 
 # same site (flask.palletsprojects.com)
+#############################################################################
 
 
-###########################
-# Alicorn Backend Demo Setup
-############################
-cite pip documentation and Python Docs
+
+Source cited: pip documentation and Python Docs
+(think pip might mean "package installer for python")
+     - used to install, manage, and uninstall software libraries from the Python Package Index
+
+##                                  ##
+##  ~ Alicorn Backend Demo Setup ~  ##
+##                                  ##
 
 
 
@@ -50,6 +64,7 @@ cite pip documentation and Python Docs
 ## Install dependencies
   - in command promt type
         pip install -r requirements.txt
+              >that is the requirements.txt that you built in gethub
 
 ## Run server
 still in command prompt type:
