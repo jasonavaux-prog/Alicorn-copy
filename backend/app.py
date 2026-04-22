@@ -5,6 +5,8 @@ Update 4/21/2026
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+#psy for database or db for short
+import psycopg2
 import os
 
 
