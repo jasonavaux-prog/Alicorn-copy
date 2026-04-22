@@ -21,6 +21,25 @@ def home():
     return "ALICORN backend is running"
 
 
+################  TEST  ################################################
+# Adapted from Flask + psycopg2 documentation examples
+# https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14     
+# Flask Documentation: https://flask.palletsprojects.com/
+# Psycopg2 Documentation: https://www.psycopg.org/docs/            and so on.....
+
+
+# Database connection test route
+@app.route("/test-db")
+def test_db():
+    try:
+        conn = psycopg2.connect(os.getenv("DATABASE_URL"))
+        cur = conn.cursor()
+        cur.execute("SELECT 1;")
+        result = cur.fetchone()
+        conn.close()
+        return f"Database connected! Result: {result}"
+    except Exception as e:
+        return f"Error: {e}"
 
 
 # app.jsx will "fetch" request the URL in app.py  
