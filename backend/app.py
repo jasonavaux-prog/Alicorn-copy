@@ -1,6 +1,6 @@
 """
 CREATED 4/18/2026
-Update 4/21/2026
+Update 4/22/2026
 """
 
 from flask import Flask, request, jsonify
@@ -8,7 +8,16 @@ from flask_cors import CORS
 #psy for database or db for short
 import psycopg2
 import os
-DATABASE_URL = postgresql://postgres:0mLKcJUphyg85yKx@db.phpgxdpdsujisdnbtmcm.supabase.co:5432/postgres
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+conn = psycopg2.connect(DATABASE_URL)
+print("CONNECTED ✅")
+conn.close()
+
+
+
+
 
 app = Flask(__name__)
 # is an HTTP-header based mechanism that allows a server to indicate any origins 
