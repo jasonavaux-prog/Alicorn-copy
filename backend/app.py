@@ -8,7 +8,7 @@ from flask_cors import CORS
 #psy for database or db for short
 import psycopg2
 import os
-
+DATABASE_URL = postgresql://postgres:0mLKcJUphyg85yKx@db.phpgxdpdsujisdnbtmcm.supabase.co:5432/postgres
 
 app = Flask(__name__)
 # is an HTTP-header based mechanism that allows a server to indicate any origins 
