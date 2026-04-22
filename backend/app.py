@@ -1,77 +1,23 @@
-"""
-CREATED 4/18/2026
-Update 4/22/2026
-"""
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-#psy for database or db for short
-import psycopg2
-import os
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-conn = psycopg2.connect(DATABASE_URL)
-print("CONNECTED ✅")
-conn.close()
-
-
-
-
 
 app = Flask(__name__)
-# is an HTTP-header based mechanism that allows a server to indicate any origins 
-# https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS
-# simple version: CORS allows use of fetch(), it gives permission for the browser to accept the data from another origin
 CORS(app)
 
 
-# route() decorator to tell Flask what URL should trigger our function. (source flask quickstart)
 @app.route("/")
 def home():
     return "ALICORN backend is running"
 
-
-################  TEST  ################################################
-# Adapted from Flask + psycopg2 documentation examples
-# https://medium.com/@shahrukhshl0/building-a-flask-crud-application-with-psycopg2-58de201e3c14     
-# Flask Documentation: https://flask.palletsprojects.com/
-# Psycopg2 Documentation: https://www.psycopg.org/docs/            and so on.....
-
-
-# Database connection test route
-@app.route("/test-db")
-def test_db():
-    try:
-        conn = psycopg2.connect(os.getenv("DATABASE_URL"))
-        cur = conn.cursor()
-        cur.execute("SELECT 1;")
-        result = cur.fetchone()
-        conn.close()
-        return f"Database connected! Result: {result}"
-    except Exception as e:
-        return f"Error: {e}"
-
-
-# app.jsx will "fetch" request the URL in app.py  
-# EXAMPLE: fetch("http://localhost:5000/bus-location")      
-
-# that fetch hits backend, /bus-location as shown below
-
-# App.jsx sends a fetch request to the Flask backend URL (/bus-location).
-# This request is handled by app.py using a route.
-# The route returns JSON data back to the frontend.
-
 @app.route("/bus-location", methods=["GET"])
 def bus_location():
-    # sends JSON back to front end
-    return jsonify(current_bus_location)
+    return jsonify({
+        "busId": "12",
+        "latitude": 38.8816,
+        "longitude": -77.0910,
+        "status": "On Route"
+    })
 
-
-
-# ----------------------------------
-# ATTENDANCE DATA
-# ----------------------------------
 @app.route("/attendance", methods=["GET"])
 def attendance():
     return jsonify([
@@ -79,11 +25,6 @@ def attendance():
         {"studentId": "1002", "name": "Taylor Smith", "status": "Absent"}
     ])
 
-
-
-# ----------------------------------
-# STUDENT LIST
-# ----------------------------------
 @app.route("/students", methods=["GET"])
 def students():
     return jsonify([
@@ -91,48 +32,14 @@ def students():
         {"studentId": "1002", "name": "Taylor Smith", "route": "Route B"}
     ])
 
-
-
-# ----------------------------------
-# RECEIVE GPS DATA FROM FRONTEND
-# ----------------------------------
-#this will write the data
 @app.route("/gps", methods=["POST"])
 def gps():
     data = request.get_json()
-
-    # check if data was sent
-    if not data:
-        return jsonify({"error": "No data provided"}), 400
-
-    # update stored bus location
-    current_bus_location["busId"] = data.get("busId", current_bus_location["busId"])
-    current_bus_location["latitude"] = data.get("latitude", current_bus_location["latitude"])
-    current_bus_location["longitude"] = data.get("longitude", current_bus_location["longitude"])
-    current_bus_location["status"] = data.get("status", current_bus_location["status"])
-
     print("GPS DATA:", data)
-
     return jsonify({
         "status": "received",
-        "busLocation": current_bus_location
+        "data": data
     })
 
-# ----------------------------------
-# STORE CURRENT BUS LOCATION
-# ----------------------------------
-#this will read data
-current_bus_location = {
-    "busId": "12",
-    "latitude": 38.8816,
-    "longitude": -77.0910,
-    "status": "On Route"
-}
-
-
-# ----------------------------------
-# RUN SERVER (local + Render)
-# ----------------------------------
 if __name__ == "__main__":
-    PORT = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(debug=True)
