@@ -26,6 +26,3 @@ def test_db():
 if __name__ == "__main__":
     app.run(debug=True)
     
-    
-    
-    "postgresql://postgres.phpgxdpdsujisdnbtmcm:JKacwVtR9nnb1yBo@aws-1-us-east-1.pooler.supabase.com:6543/postgres"
