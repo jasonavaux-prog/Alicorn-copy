@@ -33,6 +33,8 @@ def test_db():
         return jsonify({"success": False, "error": str(e)})
 
 
+
+#actual call try
 @app.route("/roster")
 def get_roster():
     try:
@@ -64,58 +66,56 @@ def get_roster():
         })
 
 
+# try and get attendance from supabase
+@app.route("/attendance")
+def get_attendance():
+    try:
+        conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+        cur = conn.cursor()
 
+        cur.execute("SELECT student_name, bus_id, date, status FROM attendance;")
+        rows = cur.fetchall()
 
+        data = []
+        for row in rows:
+            data.append({
+                "student_name": row[0],
+                "bus_id": row[1],
+                "date": str(row[2]),
+                "status": row[3]
+            })
 
+        cur.close()
+        conn.close()
 
-@app.route("/check-in", methods=["POST"])
-def check_in():
+# sending attendence recording into database
+@app.route("/attendance", methods=["POST"])
+def add_attendance():
     try:
         data = request.get_json()
 
-        student_name = data.get("student_name", "").strip()
-        bus_id = data.get("bus_id", "").strip()
-
-        if student_name == "" or bus_id == "":
-            return jsonify({
-                "success": False,
-                "error": "student_name and bus_id are required"
-            }), 400
+        student_name = data.get("student_name")
+        bus_id = data.get("bus_id")
+        date = data.get("date")
+        status = data.get("status")
 
         conn = psycopg2.connect(DATABASE_URL, sslmode="require")
         cur = conn.cursor()
 
         cur.execute(
-            """
-            insert into student_checkins (student_name, bus_id)
-            values (%s, %s)
-            returning id, student_name, bus_id, created_at;
-            """,
-            (student_name, bus_id)
+            "INSERT INTO attendance (student_name, bus_id, date, status) VALUES (%s, %s, %s, %s);",
+            (student_name, bus_id, date, status)
         )
 
-        new_row = cur.fetchone()
         conn.commit()
-
         cur.close()
         conn.close()
 
-        return jsonify({
-            "success": True,
-            "message": "Check-in saved",
-            "checkin": {
-                "id": new_row[0],
-                "student_name": new_row[1],
-                "bus_id": new_row[2],
-                "created_at": str(new_row[3])
-            }
-        })
+        return jsonify({"success": True})
 
     except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
+        return jsonify({"error": str(e)})
+
 
 
 if __name__ == "__main__":
