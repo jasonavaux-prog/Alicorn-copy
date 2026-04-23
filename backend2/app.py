@@ -88,6 +88,11 @@ def get_attendance():
         cur.close()
         conn.close()
 
+        return jsonify(data)
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
 # sending attendence recording into database
 @app.route("/attendance", methods=["POST"])
 def add_attendance():
