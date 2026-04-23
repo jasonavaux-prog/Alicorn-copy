@@ -1,7 +1,7 @@
-# https://flask.palletsprojects.com/en/stable/quickstart/ (supports:    @app.route(...), request.get_json(), jsonify(...)
-# https://flask-cors.readthedocs.io/en/latest/   (supports: from flask_cors import CORS, CORS(app))
-# https://www.psycopg.org/docs/usage.html     (supports: psycopg2.connect(...), SQL execution, cursor usage)
-# https://supabase.com/docs/guides/database/connecting-to-postgres   (supports: DATABSE_URL, aka connection string)
+# https://flask.palletsprojects.com/en/stable/quickstart/
+# https://flask-cors.readthedocs.io/en/latest/
+# https://www.psycopg.org/docs/usage.html
+# https://supabase.com/docs/guides/database/connecting-to-postgres
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -16,9 +16,9 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 @app.route("/")
 def home():
-    return "Backend running"
+    return "ALICORN backend running"
 
-# run to see if connected
+
 @app.route("/test-db")
 def test_db():
     try:
@@ -28,23 +28,21 @@ def test_db():
         result = cur.fetchone()
         cur.close()
         conn.close()
+
         return jsonify({"success": True, "result": result[0]})
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)})
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
-
-#actual call try
 @app.route("/roster")
 def get_roster():
     try:
-# python chit chat with database
         conn = psycopg2.connect(DATABASE_URL, sslmode="require")
         cur = conn.cursor()
-#SELECT.... FROM table;  (SQL select queries
+
         cur.execute("SELECT id, student_name, bus_id, grade FROM roster ORDER BY id;")
         rows = cur.fetchall()
-#loop through database section and conver to JSON   (JSON format using Flask’s jsonify)
+
         roster_list = []
         for row in rows:
             roster_list.append({
@@ -60,29 +58,31 @@ def get_roster():
         return jsonify(roster_list)
 
     except Exception as e:
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        })
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
-# try and get attendance from supabase
 @app.route("/attendance")
 def get_attendance():
     try:
         conn = psycopg2.connect(DATABASE_URL, sslmode="require")
         cur = conn.cursor()
 
-        cur.execute("SELECT student_name, bus_id, date, status FROM attendance;")
+        cur.execute("""
+            SELECT id, student_name, bus_id, created_at, date, status
+            FROM attendance
+            ORDER BY id DESC;
+        """)
         rows = cur.fetchall()
 
         data = []
         for row in rows:
             data.append({
-                "student_name": row[0],
-                "bus_id": row[1],
-                "date": str(row[2]),
-                "status": row[3]
+                "id": row[0],
+                "student_name": row[1],
+                "bus_id": row[2],
+                "created_at": str(row[3]),
+                "date": str(row[4]) if row[4] is not None else None,
+                "status": row[5]
             })
 
         cur.close()
@@ -91,9 +91,9 @@ def get_attendance():
         return jsonify(data)
 
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return jsonify({"error": str(e)}), 500
 
-# sending attendence recording into database
+
 @app.route("/attendance", methods=["POST"])
 def add_attendance():
     try:
@@ -108,19 +108,34 @@ def add_attendance():
         cur = conn.cursor()
 
         cur.execute(
-            "INSERT INTO attendance (student_name, bus_id, date, status) VALUES (%s, %s, %s, %s);",
+            """
+            INSERT INTO attendance (student_name, bus_id, date, status)
+            VALUES (%s, %s, %s, %s)
+            RETURNING id, student_name, bus_id, created_at, date, status;
+            """,
             (student_name, bus_id, date, status)
         )
 
+        new_row = cur.fetchone()
         conn.commit()
+
         cur.close()
         conn.close()
 
-        return jsonify({"success": True})
+        return jsonify({
+            "success": True,
+            "row": {
+                "id": new_row[0],
+                "student_name": new_row[1],
+                "bus_id": new_row[2],
+                "created_at": str(new_row[3]),
+                "date": str(new_row[4]) if new_row[4] is not None else None,
+                "status": new_row[5]
+            }
+        })
 
     except Exception as e:
-        return jsonify({"error": str(e)})
-
+        return jsonify({"success": False, "error": str(e)}), 500
 
 
 if __name__ == "__main__":
